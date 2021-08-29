@@ -21,9 +21,16 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
       body: ScopedBuilder<HomeStore, Exception, int>(
         store: store,
         onState: (_, counter) {
-          return Padding(
-            padding: EdgeInsets.all(10),
-            child: Text('$counter'),
+          return Center(
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Text('$counter'),
+            ),
+          );
+        },
+        onLoading: (state){
+          return Center(
+            child: CircularProgressIndicator(),
           );
         },
         onError: (context, error) => Center(
@@ -35,7 +42,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          store.increment();
+          Modular.to.pushNamed('/admin');
         },
         child: Icon(Icons.add),
       ),

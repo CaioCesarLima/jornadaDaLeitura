@@ -8,6 +8,6 @@ class SplashTripleStore extends NotifierStore<Exception, int> {
     setLoading(true);
 
     await Future.delayed(Duration(seconds: 1));
-    Modular.to.pushNamed('/login/');
+    Modular.to.navigate('/login');
   }
 }

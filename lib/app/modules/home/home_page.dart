@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:timeline_tile/timeline_tile.dart';
 import 'home_store.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,39 +14,144 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends ModularState<HomePage, HomeStore> {
+  int levelUser = 1;
+  String nomeUser = 'Caio';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Counter'),
-      ),
-      body: ScopedBuilder<HomeStore, Exception, int>(
-        store: store,
-        onState: (_, counter) {
-          return Center(
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: Text('$counter'),
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          Opacity(
+            opacity: 0.3,
+            child: Container(
+              height: double.infinity,
+              width: double.infinity,
+              child: Image.network(
+                'https://lp.mentalidadeempreendedora.com.br/wp-content/uploads/2017/06/background-preto-1.png',
+                fit: BoxFit.cover,
+              ),
             ),
-          );
-        },
-        onLoading: (state){
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-        onError: (context, error) => Center(
-          child: Text(
-            'Too many clicks',
-            style: TextStyle(color: Colors.red),
           ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Modular.to.pushNamed('/admin');
-        },
-        child: Icon(Icons.add),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 100),
+                  child: Container(
+                    height: 100,
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Text('Que bom que você voltou', style: GoogleFonts.pacifico(
+                            fontSize: 20,
+                            color: Colors.purple[100]
+                          ),),
+                          Text('$nomeUser', style: GoogleFonts.pacifico(
+                            fontSize: 30,
+                            color: Colors.white
+                          ),),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 300,
+                  child: ListView.builder(
+                    itemCount: 15,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        children: [
+                          SizedBox(
+                            height: 200,
+                            width: 200,
+                            child: TimelineTile(
+                              beforeLineStyle: LineStyle(
+                                color: levelUser >= index + 1
+                                    ? Colors.purple
+                                    : Colors.grey,
+                              ),
+                              afterLineStyle: LineStyle(
+                                color: levelUser > index + 1
+                                    ? Colors.purple
+                                    : Colors.grey,
+                              ),
+                              alignment: TimelineAlign.manual,
+                              lineXY: index % 2 == 0 ? 0 : 1,
+                              isFirst: index == 0,
+                              isLast: index == 14,
+                              axis: TimelineAxis.horizontal,
+                              indicatorStyle: IndicatorStyle(
+                                  height: 80,
+                                  width: 80,
+                                  indicator: Container(
+                                    height: 80,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: levelUser >= index + 1
+                                            ? Colors.purple
+                                            : Colors.grey,
+                                        width: 3,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "Nível",
+                                          style: GoogleFonts.pacifico(
+                                              color: Colors.black,
+                                              fontSize: 18),
+                                        ),
+                                        Text(
+                                          '${index + 1}',
+                                          style: GoogleFonts.pacifico(
+                                              color: Colors.black,
+                                              fontSize: 20),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 150,
+                            child: TimelineDivider(
+                              color: levelUser > index + 1
+                                  ? Colors.purple
+                                  : Colors.grey,
+                              axis: TimelineAxis.vertical,
+                              begin: 0.09,
+                              end: 0.91,
+                            ),
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)
+                  ),
+                    onPressed: () {
+                      setState(() {
+                        levelUser += 1;
+                      });
+                    },
+                    child: Text('Próximo Nível'))
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

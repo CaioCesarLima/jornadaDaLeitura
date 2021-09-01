@@ -2,6 +2,7 @@
 import 'package:jornada_da_leitura/app/modules/admin/user/user_page.dart';
 import 'package:jornada_da_leitura/app/modules/admin/user/user_triple_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:jornada_da_leitura/app/modules/admin/user/users_page.dart';
 
 class UserModule extends Module {
   @override
@@ -11,6 +12,7 @@ class UserModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute('/', child: (_, args) => UserPage()),
+    ChildRoute(Modular.initialRoute, child: (_, args) => UsersPage()),
+    ChildRoute('/user', child: (_, args) => UserPage()),
   ];
 }

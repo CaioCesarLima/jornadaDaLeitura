@@ -55,7 +55,7 @@ class LevelPageState extends State<LevelPage> {
           ),
         Center(
           child: Padding(
-            padding: const EdgeInsets.only(top: 50),
+            padding: const EdgeInsets.only(top: 30),
             child: Text(
               'Trecho para Leitura',
               style:

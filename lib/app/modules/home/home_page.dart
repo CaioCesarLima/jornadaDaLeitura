@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter_triple/flutter_triple.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'home_store.dart';
@@ -22,17 +21,17 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          Opacity(
-            opacity: 0.3,
-            child: Container(
-              height: double.infinity,
-              width: double.infinity,
-              child: Image.network(
-                'https://lp.mentalidadeempreendedora.com.br/wp-content/uploads/2017/06/background-preto-1.png',
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          // Opacity(
+          //   opacity: 0.3,
+          //   child: Container(
+          //     height: double.infinity,
+          //     width: double.infinity,
+          //     child: Image.network(
+          //       'https://lp.mentalidadeempreendedora.com.br/wp-content/uploads/2017/06/background-preto-1.png',
+          //       fit: BoxFit.cover,
+          //     ),
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -68,55 +67,60 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                           SizedBox(
                             height: 200,
                             width: 200,
-                            child: TimelineTile(
-                              beforeLineStyle: LineStyle(
-                                color: levelUser >= index + 1
-                                    ? Colors.purple
-                                    : Colors.grey,
-                              ),
-                              afterLineStyle: LineStyle(
-                                color: levelUser > index + 1
-                                    ? Colors.purple
-                                    : Colors.grey,
-                              ),
-                              alignment: TimelineAlign.manual,
-                              lineXY: index % 2 == 0 ? 0 : 1,
-                              isFirst: index == 0,
-                              isLast: index == 14,
-                              axis: TimelineAxis.horizontal,
-                              indicatorStyle: IndicatorStyle(
-                                  height: 80,
-                                  width: 80,
-                                  indicator: Container(
+                            child: GestureDetector(
+                              onTap: (){
+                                Modular.to.navigate('/home/level');
+                              },
+                              child: TimelineTile(
+                                beforeLineStyle: LineStyle(
+                                  color: levelUser >= index + 1
+                                      ? Colors.purple
+                                      : Colors.grey,
+                                ),
+                                afterLineStyle: LineStyle(
+                                  color: levelUser > index + 1
+                                      ? Colors.purple
+                                      : Colors.grey,
+                                ),
+                                alignment: TimelineAlign.manual,
+                                lineXY: index % 2 == 0 ? 0 : 1,
+                                isFirst: index == 0,
+                                isLast: index == 14,
+                                axis: TimelineAxis.horizontal,
+                                indicatorStyle: IndicatorStyle(
                                     height: 80,
                                     width: 80,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                        color: levelUser >= index + 1
-                                            ? Colors.purple
-                                            : Colors.grey,
-                                        width: 3,
+                                    indicator: Container(
+                                      height: 80,
+                                      width: 80,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                          color: levelUser >= index + 1
+                                              ? Colors.purple
+                                              : Colors.grey,
+                                          width: 3,
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          "Nível",
-                                          style: GoogleFonts.pacifico(
-                                              color: Colors.black,
-                                              fontSize: 18),
-                                        ),
-                                        Text(
-                                          '${index + 1}',
-                                          style: GoogleFonts.pacifico(
-                                              color: Colors.black,
-                                              fontSize: 20),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "Nível",
+                                            style: GoogleFonts.pacifico(
+                                                color: Colors.black,
+                                                fontSize: 18),
+                                          ),
+                                          Text(
+                                            '${index + 1}',
+                                            style: GoogleFonts.pacifico(
+                                                color: Colors.black,
+                                                fontSize: 20),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ),
                             ),
                           ),
                           SizedBox(

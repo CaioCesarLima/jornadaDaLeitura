@@ -78,12 +78,22 @@ class LoginPageState extends State<LoginPage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          Modular.to.navigate('/admin/users');
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)
+                        ),
+                        child: Text('Admin'),
+                      ),
+                      SizedBox(height: 10,),
+                      ElevatedButton(
+                        onPressed: () {
                           Modular.to.navigate('/home');
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)
                         ),
-                        child: Text('Começar'),
+                        child: Text('Home'),
                       ),
                     ],
                   ),

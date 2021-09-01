@@ -8,8 +8,10 @@ class AppWidget extends StatelessWidget {
       title: 'Jornada da Leitura',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        primaryColor: Color(0xff332362),
-        accentColor: Colors.yellowAccent
+        colorScheme: ThemeData().colorScheme.copyWith(
+              secondary: Color(0xffD9BE3B),
+              primary: Color(0xff332362),
+            ),
       ),
     ).modular();
   }

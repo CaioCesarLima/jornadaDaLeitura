@@ -13,6 +13,6 @@ import 'package:jornada_da_leitura/app/modules/level/level_page.dart';
   @override
   final List<ModularRoute> routes = [
     ChildRoute(Modular.initialRoute, child: (_, args) => HomePage()),
-    ChildRoute('/level', child: (_, args) => LevelPage(levelID: 1,)),
+    ChildRoute('/level', child: (_, args) => LevelPage(level: args.data,)),
   ];
  }

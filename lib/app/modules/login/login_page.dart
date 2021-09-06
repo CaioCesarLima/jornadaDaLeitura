@@ -1,6 +1,10 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_triple/flutter_triple.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jornada_da_leitura/app/modules/login/login_triple_store.dart';
 
 class LoginPage extends StatefulWidget {
   final String title;
@@ -10,6 +14,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
+  TextEditingController username = TextEditingController();
+  TextEditingController password = TextEditingController();
+  LoginTripleStore controller = Modular.get<LoginTripleStore>();
+  final snackBar = SnackBar(content: Text('Yay! A SnackBar!'));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +53,7 @@ class LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: TextFormField(
+                          controller: username,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               hoverColor: Colors.deepPurpleAccent,
@@ -62,6 +71,7 @@ class LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: TextFormField(
+                          controller: password,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               hoverColor: Colors.deepPurpleAccent,
@@ -76,24 +86,32 @@ class LoginPageState extends State<LoginPage> {
                       SizedBox(
                         height: 15,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Modular.to.navigate('/admin/users');
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)
+                      ScopedBuilder(
+                        store: controller,
+                        onLoading: ((context) => ElevatedButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.purple)),
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            )),
+                        onState: (context, state) => ElevatedButton(
+                          onPressed: () {
+                            controller.login(username.text.trim(), password.text.trim());
+                          },
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.purple)),
+                          child: Text('Acessar'),
                         ),
-                        child: Text('Admin'),
-                      ),
-                      SizedBox(height: 10,),
-                      ElevatedButton(
-                        onPressed: () {
-                          Modular.to.navigate('/home');
+                        onError: (context, erro){
+                          return Container(
+                            child: Text(erro.toString()),
+                          );
                         },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)
-                        ),
-                        child: Text('Home'),
                       ),
                     ],
                   ),

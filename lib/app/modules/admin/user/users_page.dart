@@ -61,7 +61,7 @@ class UsersPageState extends State<UsersPage> {
                 itemCount: 15,
                 itemBuilder: (context, index) {
                   return Slidable(
-                      child: ListTileCustom(),
+                      child: listTileCustom(),
                       actionExtentRatio: 0.25,
                       actionPane: SlidableDrawerActionPane(),
                       actions: [
@@ -96,7 +96,7 @@ class UsersPageState extends State<UsersPage> {
   }
 }
 
-Widget ListTileCustom() {
+Widget listTileCustom() {
   return ListTile(
     title: Text('Nome do usuário'),
     leading: Icon(

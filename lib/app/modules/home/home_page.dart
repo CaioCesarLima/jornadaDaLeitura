@@ -1,6 +1,10 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_triple/flutter_triple.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jornada_da_leitura/app/models/user_model.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'home_store.dart';
 
@@ -13,13 +17,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends ModularState<HomePage, HomeStore> {
-  int levelUser = 1;
-  String nomeUser = 'Caio';
+
+  @override
+  void initState() { 
+    super.initState();
+    store.setUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Stack(
+      body: ScopedBuilder<HomeStore, dynamic, User>(
+        onState:(context, state)=> Stack(
         children: [
           // Opacity(
           //   opacity: 0.3,
@@ -47,7 +57,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                             fontSize: 20,
                             color: Colors.purple[100]
                           ),),
-                          Text('$nomeUser', style: GoogleFonts.pacifico(
+                          Text(state.name, style: GoogleFonts.pacifico(
                             fontSize: 30,
                             color: Colors.white
                           ),),
@@ -73,12 +83,12 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                               },
                               child: TimelineTile(
                                 beforeLineStyle: LineStyle(
-                                  color: levelUser >= index + 1
+                                  color: state.level >= index + 1
                                       ? Colors.purple
                                       : Colors.grey,
                                 ),
                                 afterLineStyle: LineStyle(
-                                  color: levelUser > index + 1
+                                  color: state.level > index + 1
                                       ? Colors.purple
                                       : Colors.grey,
                                 ),
@@ -96,7 +106,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         border: Border.all(
-                                          color: levelUser >= index + 1
+                                          color: state.level >= index + 1
                                               ? Colors.purple
                                               : Colors.grey,
                                           width: 3,
@@ -126,7 +136,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                           SizedBox(
                             height: 150,
                             child: TimelineDivider(
-                              color: levelUser > index + 1
+                              color: state.level > index + 1
                                   ? Colors.purple
                                   : Colors.grey,
                               axis: TimelineAxis.vertical,
@@ -147,9 +157,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                     backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)
                   ),
                     onPressed: () {
-                      setState(() {
-                        levelUser += 1;
-                      });
+                      store.goToLevel();
                     },
                     child: Text('Próximo Nível'))
               ],
@@ -157,6 +165,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
           ),
         ],
       ),
+      )
     );
   }
 }

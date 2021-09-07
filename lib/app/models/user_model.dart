@@ -2,7 +2,7 @@ class User {
   final String id;
   final String name;
   final int level;
-  final bool respondeuNivelAtual;
+  bool respondeuNivelAtual;
   final bool permitirRepetir;
   final bool isAdmin;
 

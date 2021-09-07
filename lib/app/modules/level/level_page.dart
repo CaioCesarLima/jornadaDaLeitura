@@ -1,9 +1,10 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jornada_da_leitura/app/models/level_model.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'level_triple_store.dart';
 
@@ -22,6 +23,7 @@ class LevelPage extends StatefulWidget {
 
 class LevelPageState extends State<LevelPage> {
   LevelTripleStore controller = LevelTripleStore();
+  
   @override
   void initState() {
     super.initState();
@@ -109,7 +111,8 @@ class LevelPageState extends State<LevelPage> {
                       backgroundColor:
                           MaterialStateProperty.all<Color>(Colors.purple)),
                   onPressed: () {
-                    _launchURL(widget.level.urlFormulario);
+                    controller.setUserTentativa(widget.level.urlFormulario, context);
+                    //_launchURL(widget.level.urlFormulario);
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -121,5 +124,4 @@ class LevelPageState extends State<LevelPage> {
   }
 }
 
-void _launchURL(String url) async =>
-    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+

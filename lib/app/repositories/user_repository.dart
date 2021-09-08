@@ -26,4 +26,42 @@ class UserRepository{
     // }
 
   }
+  Future<List<User>> searchUser(String search)async{
+    QueryBuilder<ParseUser> queryBuilder = QueryBuilder<ParseUser>(ParseUser.forQuery());
+    queryBuilder.whereContains('name', search);
+    ParseResponse response = await queryBuilder.query();
+
+    if (response.success && response.results != null) {
+      List responseList = response.results as List<ParseObject>;
+      return responseList.map((e) => User(id: e['objectId'], level: e['level'], name: e['name'], respondeuNivelAtual: e['respondeu_nivel_atual'], isAdmin: e['isAdmin'], permitirRepetir: e['permitir_repetir'],)).toList();
+    } else {
+      return [];
+    }
+  }
+
+  Future<bool> repetirProva(String objectId)async {
+    final ParseCloudFunction function = ParseCloudFunction('editRepondeuUser');
+    final Map<String, dynamic> params = <String, dynamic>{
+      'objectId': objectId,
+      'respondeu': false
+    };
+    final ParseResponse parseResponse =
+        await function.execute(parameters: params);
+    
+    return parseResponse.success ? true: false; 
+    
+  }
+
+  Future<bool> nextLevel(String objectId,int level)async {
+    final ParseCloudFunction function = ParseCloudFunction('editUserProperty');
+    final Map<String, dynamic> params = <String, dynamic>{
+      'objectId': objectId,
+      'newLevel': level + 1
+    };
+    final ParseResponse parseResponse =
+        await function.execute(parameters: params);
+    
+    return parseResponse.success ? true: false; 
+    
+  }
 }

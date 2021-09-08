@@ -30,7 +30,7 @@ class LevelTripleStore extends NotifierStore<Error, Level> {
       await userController.setTentativaUser();
       userController.state.respondeuNivelAtual = true;
       update(null);
-      //_launchURL(urlYoutube);
+      _launchURL(urlYoutube);
     }
   }
 

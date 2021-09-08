@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_triple/flutter_triple.dart';
+import 'package:jornada_da_leitura/app/models/user_model.dart';
+import 'package:jornada_da_leitura/app/modules/admin/user/users_store.dart';
 
 class UsersPage extends StatefulWidget {
   final String title;
@@ -8,7 +11,8 @@ class UsersPage extends StatefulWidget {
   @override
   UsersPageState createState() => UsersPageState();
 }
-class UsersPageState extends State<UsersPage> {
+
+class UsersPageState extends ModularState<UsersPage, UsersStore> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,12 +23,13 @@ class UsersPageState extends State<UsersPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: TextButton(
-              onPressed: (){
+              onPressed: () {
                 Modular.to.navigate('/admin/levels');
               },
-              child: Text('Editar Níveis', style: TextStyle(
-                color: Colors.white
-              ),),
+              child: Text(
+                'Editar Níveis',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           )
         ],
@@ -37,9 +42,12 @@ class UsersPageState extends State<UsersPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextFormField(
+              onFieldSubmitted: (value) {
+                store.search(value);
+              },
               decoration: InputDecoration(
                   //label: Text('Senha'),
-                  labelText: 'Senha',
+                  labelText: 'Pesquisa',
                   labelStyle: TextStyle(color: Colors.white),
                   border: OutlineInputBorder(),
                   hoverColor: Colors.deepPurpleAccent,
@@ -54,58 +62,90 @@ class UsersPageState extends State<UsersPage> {
             height: 10,
           ),
           Expanded(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              width: double.infinity,
-              child: ListView.separated(
-                itemCount: 15,
-                itemBuilder: (context, index) {
-                  return Slidable(
-                      child: listTileCustom(),
-                      actionExtentRatio: 0.25,
-                      actionPane: SlidableDrawerActionPane(),
-                      actions: [
-                        IconSlideAction(
-                            caption: 'Repetir',
-                            color: Colors.red[200],
-                            icon: Icons.wrong_location,
-                            onTap: () {}),
-                        IconSlideAction(
-                            caption: 'Passar de nível',
-                            color: Colors.green[400],
-                            icon: Icons.check,
-                            onTap: () {}),
-                        IconSlideAction(
-                            caption: 'Editar',
-                            color: Colors.blue[400],
-                            icon: Icons.check,
-                            onTap: () {
-                              Modular.to.navigate('/admin/users/user');
-                            }),
-                      ]);
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return Divider();
-                },
-              ),
+              child: ScopedBuilder<UsersStore, dynamic, List<User>>(
+            onLoading: (context) => Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
+            onState: (context, state) => Container(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                width: double.infinity,
+                child: state != null
+                    ? ListView.separated(
+                        itemCount: state.length,
+                        itemBuilder: (context, index) {
+                          User user = state[index];
+                          return Slidable(
+                              child: listTileCustom(user.name, user.level,
+                                  user.respondeuNivelAtual),
+                              actionExtentRatio: 0.25,
+                              actionPane: SlidableDrawerActionPane(),
+                              actions: [
+                                IconSlideAction(
+                                    caption: 'Repetir',
+                                    color: Colors.red[200],
+                                    icon: Icons.wrong_location,
+                                    onTap: user.respondeuNivelAtual
+                                        ? () {
+                                            controller.liberarNivelUser(index);
+                                          }
+                                        : () {}),
+                                user.level == 15 ?
+                                IconSlideAction(
+                                    caption: 'Nível Máximo',
+                                    color: Colors.grey,
+                                    icon: Icons.check,
+                                    onTap: () {
+                                    }):IconSlideAction(
+                                    caption: 'Passar de nível',
+                                    color: Colors.green[400],
+                                    icon: Icons.check,
+                                    onTap: () {
+                                      controller.nextLevel(index);
+                                    }),
+                                IconSlideAction(
+                                    caption: 'Editar',
+                                    color: Colors.blue[400],
+                                    icon: Icons.check,
+                                    onTap: () {
+                                      Modular.to.navigate('/admin/users/user');
+                                    }),
+                              ]);
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return Divider();
+                        },
+                      )
+                    : Center(
+                        child: Text("Pesquise o usuário que desejar"),
+                      )),
+          )),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
       ),
     );
   }
 }
 
-Widget listTileCustom() {
+Widget listTileCustom(String name, int level, bool respondeuNivel) {
   return ListTile(
-    title: Text('Nome do usuário'),
+    title: Text(name),
     leading: Icon(
       Icons.arrow_forward,
       color: Colors.white,
     ),
     subtitle: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('Nível 1'),
+        Text('Nível $level'),
+        respondeuNivel
+            ? Text(
+                'Nível Respondido',
+                style: TextStyle(color: Colors.green),
+              )
+            : Text('Nível Liberado')
       ],
     ),
   );

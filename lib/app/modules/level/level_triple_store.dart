@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
-import 'package:get/get.dart';
 import 'package:jornada_da_leitura/app/models/level_model.dart';
 import 'package:jornada_da_leitura/app/modules/user_logged_store.dart';
 import 'package:jornada_da_leitura/app/repositories/level_repository.dart';
@@ -40,10 +39,8 @@ class LevelTripleStore extends NotifierStore<Error, Level> {
   void _showToast(BuildContext context) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
-      
       SnackBar(
         backgroundColor: Colors.black87,
-
         content: Container(
           color: Colors.transparent,
           height: 100,

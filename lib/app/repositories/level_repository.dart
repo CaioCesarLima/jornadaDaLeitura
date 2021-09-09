@@ -13,7 +13,8 @@ class LevelRepository{
       
       print(levelresponse.id);
       return levelresponse;
+    }else{
+      return Future.error(response.error.message);
     }
-    print(response.result[0]['objectId']);
   }
 }

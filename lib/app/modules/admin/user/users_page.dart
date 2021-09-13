@@ -89,19 +89,19 @@ class UsersPageState extends ModularState<UsersPage, UsersStore> {
                                             controller.liberarNivelUser(index);
                                           }
                                         : () {}),
-                                user.level == 15 ?
-                                IconSlideAction(
-                                    caption: 'Nível Máximo',
-                                    color: Colors.grey,
-                                    icon: Icons.check,
-                                    onTap: () {
-                                    }):IconSlideAction(
-                                    caption: 'Passar de nível',
-                                    color: Colors.green[400],
-                                    icon: Icons.check,
-                                    onTap: () {
-                                      controller.nextLevel(index);
-                                    }),
+                                user.level == 15
+                                    ? IconSlideAction(
+                                        caption: 'Nível Máximo',
+                                        color: Colors.grey,
+                                        icon: Icons.check,
+                                        onTap: () {})
+                                    : IconSlideAction(
+                                        caption: 'Passar de nível',
+                                        color: Colors.green[400],
+                                        icon: Icons.check,
+                                        onTap: () {
+                                          controller.nextLevel(index);
+                                        }),
                                 IconSlideAction(
                                     caption: 'Editar',
                                     color: Colors.blue[400],
@@ -122,7 +122,9 @@ class UsersPageState extends ModularState<UsersPage, UsersStore> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Modular.to.navigate('/admin/users/user');
+        },
         child: Icon(Icons.add),
       ),
     );

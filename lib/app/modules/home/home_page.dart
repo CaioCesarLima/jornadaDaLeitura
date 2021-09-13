@@ -37,7 +37,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
               height: double.infinity,
               width: double.infinity,
               child: Image.network(
-                'https://lp.mentalidadeempreendedora.com.br/wp-content/uploads/2017/06/background-preto-1.png',
+                'https://cdn.shopify.com/s/files/1/1087/6262/files/desktop-gotinhas.jpg?v=1596483005',
                 fit: BoxFit.cover,
               ),
             ),

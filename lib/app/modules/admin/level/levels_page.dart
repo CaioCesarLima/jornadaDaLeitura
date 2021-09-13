@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_triple/flutter_triple.dart';
+import 'package:jornada_da_leitura/app/models/level_model.dart';
+import 'package:jornada_da_leitura/app/modules/admin/level/levels_triple_store.dart';
+import 'package:jornada_da_leitura/app/utils.dart';
 
 class LevelsPage extends StatefulWidget {
   final String title;
@@ -8,7 +12,14 @@ class LevelsPage extends StatefulWidget {
   @override
   LevelsPageState createState() => LevelsPageState();
 }
-class LevelsPageState extends State<LevelsPage> {
+
+class LevelsPageState extends ModularState<LevelsPage, LevelsTripleStore> {
+  @override
+  void initState() {
+    super.initState();
+    store.getLevels();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,12 +30,13 @@ class LevelsPageState extends State<LevelsPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: TextButton(
-              onPressed: (){
+              onPressed: () {
                 Modular.to.navigate('/admin/users');
               },
-              child: Text('Editar Usuários', style: TextStyle(
-                color: Colors.white
-              ),),
+              child: Text(
+                'Editar Usuários',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           )
         ],
@@ -34,77 +46,53 @@ class LevelsPageState extends State<LevelsPage> {
           SizedBox(
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: TextFormField(
-              decoration: InputDecoration(
-                  //label: Text('Senha'),
-                  labelText: 'Senha',
-                  labelStyle: TextStyle(color: Colors.white),
-                  border: OutlineInputBorder(),
-                  hoverColor: Colors.deepPurpleAccent,
-                  focusColor: Colors.deepPurpleAccent,
-                  //hintText: 'Senha',
-                  hintStyle: TextStyle(color: Colors.white),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.purple))),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
           Expanded(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              width: double.infinity,
-              child: ListView.separated(
-                itemCount: 15,
-                itemBuilder: (context, index) {
-                  return Slidable(
-                      child: listTileCustom(),
-                      actionExtentRatio: 0.25,
-                      actionPane: SlidableDrawerActionPane(),
-                      actions: [
-                        IconSlideAction(
-                            caption: 'Repetir',
-                            color: Colors.red[200],
-                            icon: Icons.wrong_location,
-                            onTap: () {}),
-                        IconSlideAction(
-                            caption: 'Passar de nível',
-                            color: Colors.green[400],
-                            icon: Icons.check,
-                            onTap: () {}),
-                        IconSlideAction(
-                            caption: 'Editar',
-                            color: Colors.blue[400],
-                            icon: Icons.check,
-                            onTap: () {}),
-                      ]);
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return Divider();
-                },
-              ),
+              child: ScopedBuilder<LevelsTripleStore, dynamic, List<Level>>(
+            onLoading: (context) => Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
+            onError: (context, error) => Utils.showToast(context, error),
+            onState: (context, state) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                width: double.infinity,
+                child: ListView.separated(
+                  itemCount: state.length,
+                  itemBuilder: (context, index) {
+                    return Slidable(
+                        child: listTileCustom(state[index]),
+                        actionExtentRatio: 0.25,
+                        actionPane: SlidableDrawerActionPane(),
+                        actions: [
+                          IconSlideAction(
+                              caption: 'Editar',
+                              color: Colors.blue[400],
+                              icon: Icons.edit,
+                              onTap: () {
+                                Modular.to.navigate('/admin/levels/level',
+                                    arguments: state[index]);
+                              }),
+                        ]);
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Divider();
+                  },
+                ),
+              );
+            },
+          )),
         ],
       ),
     );
   }
 }
 
-Widget listTileCustom() {
+Widget listTileCustom(Level level) {
   return ListTile(
-    title: Text('Nome do usuário'),
+    title: Text('Nível ${level.level}'),
     leading: Icon(
       Icons.arrow_forward,
       color: Colors.white,
-    ),
-    subtitle: Row(
-      children: [
-        Text('Nível 1'),
-      ],
     ),
   );
 }

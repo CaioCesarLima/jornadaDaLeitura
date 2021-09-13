@@ -6,6 +6,8 @@ import 'package:jornada_da_leitura/app/modules/user_logged_store.dart';
 import 'package:jornada_da_leitura/app/repositories/level_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../utils.dart';
+
 class LevelTripleStore extends NotifierStore<Error, Level> {
   final levelRepository = LevelRepository();
   final userController = Modular.get<UserLoggedStore>();
@@ -24,7 +26,7 @@ class LevelTripleStore extends NotifierStore<Error, Level> {
   //   }
   void setUserTentativa(String urlYoutube, BuildContext context) async {
     if (userController.state.respondeuNivelAtual) {
-      _showToast(context);
+      Utils.showToast(context, 'Aguarde a correção do formulário!');
     } else {
       await userController.setTentativaUser();
       userController.state.respondeuNivelAtual = true;
@@ -36,21 +38,6 @@ class LevelTripleStore extends NotifierStore<Error, Level> {
   void _launchURL(String url) async =>
       await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
 
-  void _showToast(BuildContext context) {
-    final scaffold = ScaffoldMessenger.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.black87,
-        content: Container(
-          color: Colors.transparent,
-          height: 100,
-          width: 100,
-          child: Center(
-            child: Text('Aguarde a correção do formulário!'),
-          ),
-        ),
-      ),
-    );
-  }
+  
   //}
 }

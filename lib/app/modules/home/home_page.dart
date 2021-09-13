@@ -32,12 +32,12 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
         onState:(context, state)=> Stack(
         children: [
           Opacity(
-            opacity: 0.2,
+            opacity: 0.5,
             child: Container(
               height: double.infinity,
               width: double.infinity,
               child: Image.network(
-                'https://cdn.shopify.com/s/files/1/1087/6262/files/desktop-gotinhas.jpg?v=1596483005',
+                'https://cdn.vox-cdn.com/thumbor/PKoF3VyrnFw84gUmJ8p84-yAJzA=/0x0:2560x1440/1200x800/filters:focal(1076x516:1484x924)/cdn.vox-cdn.com/uploads/chorus_image/image/67369452/Land_Sea_UpcomingProject_TeaserImage.0.png',
                 fit: BoxFit.cover,
               ),
             ),

@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:jornada_da_leitura/app/models/user_model.dart';
 import 'package:jornada_da_leitura/app/modules/admin/user/users_store.dart';
+import 'package:jornada_da_leitura/app/utils.dart';
 
 class UsersPage extends StatefulWidget {
   final String title;
@@ -17,6 +18,14 @@ class UsersPageState extends ModularState<UsersPage, UsersStore> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Padding(
+          padding: EdgeInsets.all(10),
+          child: IconButton(
+            onPressed: (){
+              Utils.logout();
+            }, icon: Icon(Icons.exit_to_app),
+          ),
+        ),
         centerTitle: true,
         title: Text(widget.title),
         actions: [

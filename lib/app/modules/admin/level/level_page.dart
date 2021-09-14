@@ -41,10 +41,12 @@ class LevelPageState extends State<LevelPage> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: TextFormField(
-                      controller: videoYoutube,
+                      controller: trecho,
+                      cursorColor: Colors.white,
                       decoration: InputDecoration(
                           //label: Text('Senha'),
                           labelText: 'Trecho',
+                          
                           labelStyle: TextStyle(color: Colors.white),
                           border: OutlineInputBorder(),
                           hoverColor: Colors.deepPurpleAccent,

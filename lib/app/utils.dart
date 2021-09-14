@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class Utils{
 
@@ -17,5 +19,14 @@ class Utils{
         ),
       ),
     );
+  }
+
+  static logout()async{
+    ParseUser currentUser = await  ParseUser.currentUser();
+    var response = await currentUser.logout();
+
+    if(response.success){
+      Modular.to.navigate('/');
+    }
   }
 }

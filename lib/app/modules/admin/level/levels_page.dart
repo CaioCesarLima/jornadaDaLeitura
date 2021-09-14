@@ -13,17 +13,26 @@ class LevelsPage extends StatefulWidget {
   LevelsPageState createState() => LevelsPageState();
 }
 
-class LevelsPageState extends ModularState<LevelsPage, LevelsTripleStore> {
+class LevelsPageState extends State<LevelsPage> {
+  LevelsTripleStore controller = Modular.get<LevelsTripleStore>();
   @override
   void initState() {
     super.initState();
-    store.getLevels();
+    controller.getLevels();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Padding(
+          padding: EdgeInsets.all(10),
+          child: IconButton(
+            onPressed: (){
+              Utils.logout();
+            }, icon: Icon(Icons.exit_to_app),
+          ),
+        ),
         centerTitle: true,
         title: Text(widget.title),
         actions: [

@@ -9,7 +9,7 @@ class LevelModule extends Module {
   @override
   final List<Bind> binds = [
     Bind.lazySingleton((i) => LevelTripleStore()),
-    Bind.lazySingleton((i) => LevelsTripleStore()),
+    Bind.singleton((i) => LevelsTripleStore()),
   ];
 
   @override

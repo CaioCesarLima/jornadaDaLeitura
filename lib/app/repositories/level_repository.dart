@@ -42,4 +42,21 @@ class LevelRepository {
       return Future.error(response.error.message);
     }
   }
+  Future<List<Level>> saveAlteracoes(String trecho, String videoYoutube, String urlFormulario, String id, int level) async {
+    ParseObject levelObject =  await ParseObject('Level')
+    ..getObject('yzQVqYzo49')
+    ..set('trecho', trecho);
+    // ..set('level', level)
+    // ..set('videoYoutube', videoYoutube)
+    // ..set('urlFormulario', urlFormulario);
+
+    ParseResponse response = await  levelObject.save();
+
+
+    if (response.success) {
+      print(response.result);
+    } else {
+      return Future.error(response.error.message);
+    }
+  }
 }

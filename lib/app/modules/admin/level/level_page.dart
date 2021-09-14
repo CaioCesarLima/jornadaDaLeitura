@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:jornada_da_leitura/app/models/level_model.dart';
+import 'package:jornada_da_leitura/app/modules/admin/level/level_triple_store.dart';
 
 class LevelPage extends StatefulWidget {
   final Level level;
@@ -14,6 +15,7 @@ class LevelPageState extends State<LevelPage> {
   TextEditingController videoYoutube = TextEditingController();
   TextEditingController trecho = TextEditingController();
   TextEditingController urlFormulario = TextEditingController();
+  final controller = Modular.get<LevelTripleStore>();
 
   @override
   void initState() {
@@ -114,8 +116,25 @@ class LevelPageState extends State<LevelPage> {
                     ),
                   ),
                 ),
+
                 //Text('${widget.level.videoYoutube}'),
               ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          TextButton(
+            onPressed: () {
+              controller.salvarLevel(trecho.text, videoYoutube.text, urlFormulario.text, widget.level.id, widget.level.level);
+            },
+            child: Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(color: Colors.deepPurple),
+              child: Text(
+                'Salvar Alterações',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ],
